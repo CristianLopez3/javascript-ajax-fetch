@@ -23,7 +23,7 @@
 
 
 
-(() => {
+(() => {    
     const $async = document.getElementById("async"),
         $fragment = document.createDocumentFragment();
 
