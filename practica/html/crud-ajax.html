@@ -17,7 +17,7 @@
 
         <input type="hidden" name="id">
 
-        <input type="text" class="input-group border-dark border-opacity-10 py-1 px-3  rounded-2 " placeholder="Nombre"> <br>
+        <input type="text" class="input-group border-dark border-opacity-10 py-1 px-3  rounded-2 " name="nombre" placeholder="Nombre"> <br>
 
         <input type="text" class="input-group py-1 px-3  border-dark border-opacity-10  rounded-2" placeholder="Constelacion" name="constelacion"> <br>
 
@@ -83,6 +83,7 @@
     xhr.send(JSON.stringify(data));
   }
 
+
   const getAll = () => {
     ajax({
       url: "http://localhost:3000/santos",
@@ -110,7 +111,67 @@
     })
   }
 
+  //METODO GET
   d.addEventListener("DOMContentLoaded", getAll())
+
+  // METODOS POST Y PUT
+  d.addEventListener("submit", e => {
+    if(e.target === $form){
+      e.preventDefault();
+    }
+
+    if(!e.target.id.value){
+      // create - POST
+      ajax({
+        url: "http://localhost:3000/santos",
+        method: "POST",
+        success: (res) => location.reload(),
+        error: (error) => $form.insertAdjacentHTML("afterend", `<p><b>${error}</b></p>`),
+        data: {
+          nombre: e.target.nombre.value, // valores que estan el formulario e.target, nombre = al name que tiene nuestro formulario y value, es el value que dicho input tiene 
+          constelacion: e.target.constelacion.value
+        }
+      })
+
+    } else {
+      // actualizar - UPDATE 
+      ajax({
+        url: `http://localhost:3000/santos/${e.target.id.value}`,
+        method: "PUT",
+        success: (res) => {},
+        error: (err) => {},
+        data: {
+          nombre: e.target.nombre.value,
+          constelacion: e.target.constelacion.value,
+        }
+      })
+
+    }
+
+    
+
+  })
+
+  d.addEventListener("click", e => {
+    if(e.target.matches(".editar")){
+      $tittle.textContent = "Editar santo";
+      $form.nombre.value = e.target.dataset.name;
+      $form.constelacion.value = e.target.dataset.constellation;
+      $form.id.value = e.target.dataset.id;
+    }
+ 
+    if(e.target.matches(".eliminar")){
+      let isDelete = confirm(`Estas seguro de eliminar el registro con id: ${e.target.dataset.id}?`);
+      if(isDelete){
+        ajax({
+          url: `http://localhost:3000/santos/${e.target.dataset.id}`,
+          method: "DELETE",
+          success: (res) => location.relod(),
+          error: (error) => alert(`<p><b>${error}</p></b>`)
+        })
+      }
+    }   
+  })
 
 
 
