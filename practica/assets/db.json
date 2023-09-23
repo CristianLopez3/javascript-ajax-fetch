@@ -1,7 +1,7 @@
 {
   "santos": [
     {
-      "nombre": "Saint Seiya",
+      "nombre": "Saint ",
       "constelacion": "Pegaso",
       "id": 1
     },
@@ -9,11 +9,6 @@
       "id": 2,
       "nombre": "Shiryu",
       "constelacion": "Dragon"
-    },
-    {
-      "id": 3,
-      "nombre": "Hyoga",
-      "constelacion": "Cisne"
     },
     {
       "id": 4,
@@ -39,6 +34,21 @@
       "nombre": "mascara de muerte",
       "constelacion": "cancer",
       "id": 8
+    },
+    {
+      "nombre": "Dohko",
+      "constelacion": "Libra",
+      "id": 9
+    },
+    {
+      "nombre": "Asmita",
+      "constelacion": "virgo",
+      "id": 10
+    },
+    {
+      "nombre": "Hyoga",
+      "constelacion": "Cisne",
+      "id": 11
     }
   ],
   "dioses": [
