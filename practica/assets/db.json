@@ -34,6 +34,11 @@
       "nombre": "Aldebaran",
       "constelacion": "Tauro",
       "id": 7
+    },
+    {
+      "nombre": "mascara de muerte",
+      "constelacion": "cancer",
+      "id": 8
     }
   ],
   "dioses": [
