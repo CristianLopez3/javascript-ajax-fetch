@@ -1,0 +1,15 @@
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+.error{
+  margin-top: 50px;
+  font-size: 50px;
+  text-align: center;
+  padding: 10px 20px;
+  border-radius: 15px;
+  box-shadow: 1px 2px 4px gray;
+}
