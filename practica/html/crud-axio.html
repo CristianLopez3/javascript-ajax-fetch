@@ -73,6 +73,8 @@
         let response = await axios.get("http://localhost:3000/santos"),
         json = await response.data;
 
+        
+
         json.forEach(el => {
           $template.querySelector(".name").textContent = el.nombre;
           $template.querySelector(".constellation").textContent = el.constelacion;
@@ -94,14 +96,94 @@
       }
     }
 
+
     d.addEventListener("DOMContentLoaded", getAll());
 
+
     d.addEventListener("submit", async e => {
+      if(e.target === $form){
+        e.preventDefault();
+      }
+
+      if(!e.target.id.value){
+        // CREATE POST
+        try {
+          let options = {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            },
+            data: {
+              nombre: e.target.nombre.value, 
+              constelacion: e.target.constelacion.value 
+            }
+          }
+
+          let response = axios("http://localhost:3000/santos", options),
+          json = response.data;
+
+          location.reload();
+          
+        } catch (error) {
+          let message = error.statusText || "Ocurrio un error";
+          $form.insertAdjacentHTML("afterend", `<p><b>Error: ${error.status}: ${message}</b></p>`)
+        }
+
+
+      } else {
+        //UPDATE - PUT
+        try {
+          let options = {
+            method: "PUT",
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            },
+            data: {
+              nombre: e.target.nombre.value, 
+              constelacion: e.target.constelacion.value 
+            }
+          }
+
+          let response = axios(`http://localhost:3000/santos/${e.target.id.value}`, options),
+          json = response.data;
+
+          location.reload();
+          
+        } catch (error) {
+          let message = error.statusText || "Ocurrio un error";
+          $form.insertAdjacentHTML("afterend", `<p><b>Error: ${error.status}: ${message}</b></p>`)
+        }
+      }
 
     })
 
-    d.addEventListener("clicl",async e => {
-      
+    d.addEventListener("click",async e => {
+      if(e.target.matches(".editar")){
+        $tittle.textContent = "Editar Santo";
+        $form.nombre.value = e.target.dataset.nombre;
+        $form.constelacion.value = e.target.dataset.constelacion;
+        $form.id.value = e.target.dataset.id;
+      }
+
+      if(e.target.matches(".eliminar")){
+        let isDelete = confirm(`Desea eliminar al santo con id ${e.target.dataset.id}?`);
+        if(isDelete){
+          try {
+          
+          let options = {
+            method: "DELETE",
+            headers: {
+              "Content-type": "application/json; charset=UTF-8"
+            }
+          }
+
+            let response = axios(`http://localhost:3000/santos/${e.target.dataset.id}`, options);
+          } catch (error) {
+            let message = error.statusText || "Ocurrio un error";
+            alert(`<p><b>Error: ${error.status}: ${message}`)
+          }
+        }
+      }
     })
     
   </script>

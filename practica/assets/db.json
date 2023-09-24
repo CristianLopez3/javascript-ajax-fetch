@@ -1,7 +1,7 @@
 {
   "santos": [
     {
-      "nombre": "Saint ",
+      "nombre": "Saint Seiya",
       "constelacion": "Pegaso",
       "id": 1
     },
@@ -34,6 +34,16 @@
       "nombre": "mascara de muerte",
       "constelacion": "cancer",
       "id": 8
+    },
+    {
+      "nombre": "SHIRIY",
+      "constelacion": "Dragon",
+      "id": 9
+    },
+    {
+      "nombre": "Saint Seiya",
+      "constelacion": "Pegaso",
+      "id": 10
     }
   ],
   "dioses": [
