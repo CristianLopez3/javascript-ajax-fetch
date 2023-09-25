@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD AJAX</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+  <h1 class="crud-tittle text-center m-5 container">Crud with ajax</h1>
+
+  <div class="row container">
+    <article class="col-lg-10 p-5">
+
+      <form class="login form-group">
+
+        <input type="text" class="input-group border-dark border-opacity-10 py-1 px-3  rounded-2 " name="firstname"
+          id="firstname" placeholder="firstname"> <br>
+
+        <input type="text" class="input-group border-dark border-opacity-10 py-1 px-3  rounded-2 " name="lastname"
+          id="lastname" placeholder="lastname"> <br>
+
+        <input type="email" class="input-group border-dark border-opacity-10 py-1 px-3  rounded-2 " name="email"
+          id="email" placeholder="email"> <br>
+
+        <input type="text" class="input-group border-dark border-opacity-10 py-1 px-3  rounded-2 " name="role" id="role"
+          placeholder="role"> <br>
+
+        <input type="text" class="input-group py-1 px-3  border-dark border-opacity-10  rounded-2"
+          placeholder="Password" name="password" id="password"> <br>
+
+        <button type="submit"
+          class="btn btn-primary py-1  border-dark border-opacity-10 px-3  rounded-2">Enviar</button>
+
+      </form>
+
+      <form class="token form-group">
+        <input type="email" class="input-group border-dark border-opacity-10 py-1 px-3  rounded-2 " name="email"
+          id="email" placeholder="firstname"> <br>
+
+        <input type="text" class="input-group border-dark border-opacity-10 py-1 px-3  rounded-2 " name="password"
+          id="password" placeholder="password"> <br>
+
+        <button type="submit">Iniciar Sesion</button>
+      </form>
+    </article>
+
+  </div>
+
+  <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script> -->
+
+  <script>
+
+    const d = document;
+    const $form = d.querySelector(".login");
+    const $login = d.querySelector(".token");
+
+    const getAll = async () => {
+      try {
+        let options = {
+
+        }
+        const response = await fetch("http://localhost:8080/api/v1/management/users"),
+          json = await response.json();
+        console.log(json)
+      } catch (error) {
+
+      }
+    }
+
+    d.addEventListener("DOMContentLoaded", getAll)
+
+    d.addEventListener("submit", async e => {
+
+      if (e.target === $form) {
+        e.preventDefault();
+
+        try {
+          let options = {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json" // Cambia aquí a "application/json"
+            },
+            body: JSON.stringify({
+              firstname: e.target.firstname.value,
+              lastname: e.target.lastname.value,
+              email: e.target.email.value,
+              password: e.target.password.value,
+              role: e.target.role.value
+            })
+          }
+
+          const response = await fetch("http://localhost:8080/api/v1/auth/register", options);
+          const json = await response.json();
+
+          if (!response.ok) {
+            throw new Error(`Error ${response.status}: ${json.message}`);
+          }
+
+          const access_token = json.access_token;
+          const refresh_token = json.refresh_token;
+          localStorage.setItem("access_token", access_token);
+          localStorage.setItem(" refresh_token", refresh_token);
+          console.log(json);
+        }
+        catch (err) {
+          console.log(err);
+          let message = err.message || "Ocurrió un error";
+          $form.insertAdjacentHTML("afterend", `<p class="error">${message}</p>`);
+        }
+      }
+
+      if(e.target === $login){
+        e.preventDefault();
+
+        try{
+
+          const options = {
+            method: "POST",
+            headers: {
+              "Content-type": "application/json"
+            },
+            body: {
+              email: e.target.email.value,
+              password: e.target.password.value
+            }
+          }
+
+        } catch(error){
+
+        }
+
+
+      }
+
+    });
+
+  </script>
+</body>
+
+</html>
