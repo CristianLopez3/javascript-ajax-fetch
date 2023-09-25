@@ -63,21 +63,11 @@
     const $form = d.querySelector(".login");
     const $login = d.querySelector(".token");
 
-    const getAll = async () => {
-      try {
-        let options = {
 
-        }
-        const response = await fetch("http://localhost:8080/api/v1/management/users"),
-          json = await response.json();
-        console.log(json)
-      } catch (error) {
-
-      }
-    }
-
-    d.addEventListener("DOMContentLoaded", getAll)
-
+    /**
+     * Registro y login de usuarios
+     * Almacenamiento del token en el localstorage
+     * */
     d.addEventListener("submit", async e => {
 
       if (e.target === $form) {
@@ -118,10 +108,10 @@
         }
       }
 
-      if(e.target === $login){
+      if (e.target === $login) {
         e.preventDefault();
 
-        try{
+        try {
 
           const options = {
             method: "POST",
@@ -136,8 +126,8 @@
 
           const response = await fetch("http://localhost:8080/api/v1/auth/authenticate", options);
           const json = await response.json(),
-          auth_token = json.access_token,
-          auth_refresh = json.refresh_token;
+            auth_token = json.access_token,
+            auth_refresh = json.refresh_token;
 
           localStorage.setItem("auth_token", auth_token);
           localStorage.setItem("auth_refresh", auth_refresh);
@@ -145,7 +135,7 @@
           console.log(auth_token);
           console.log(auth_refresh);
 
-        } catch(error){
+        } catch (error) {
           console.log(error);
         }
 
@@ -153,6 +143,32 @@
       }
 
     });
+
+
+    /**
+     * Intento de acceso a los permisos de administrador y manager
+     * */
+
+    const getAll = async () => {
+      try {
+
+        let auth_token = localStorage.getItem("auth_token")
+        let options = {
+          mode: "cors",
+          headers: {
+            "Authorization": `Bearer ${auth_token}`
+          }
+        }
+        const response = await fetch("http://localhost:8080/api/v1/admin", options),
+          json = await response.json();
+        console.log(json)
+      } catch (error) {
+        console.info(error);
+      }
+    }
+
+    d.addEventListener("DOMContentLoaded", getAll)
+
 
   </script>
 </body>
