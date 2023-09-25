@@ -47,6 +47,7 @@
           id="password" placeholder="password"> <br>
 
         <button type="submit">Iniciar Sesion</button>
+
       </form>
     </article>
 
@@ -127,14 +128,25 @@
             headers: {
               "Content-type": "application/json"
             },
-            body: {
+            body: JSON.stringify({
               email: e.target.email.value,
               password: e.target.password.value
-            }
+            })
           }
 
-        } catch(error){
+          const response = await fetch("http://localhost:8080/api/v1/auth/authenticate", options);
+          const json = await response.json(),
+          auth_token = json.access_token,
+          auth_refresh = json.refresh_token;
 
+          localStorage.setItem("auth_token", auth_token);
+          localStorage.setItem("auth_refresh", auth_refresh);
+
+          console.log(auth_token);
+          console.log(auth_refresh);
+
+        } catch(error){
+          console.log(error);
         }
 
 
